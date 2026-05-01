@@ -1,0 +1,241 @@
+/* docly.css */
+:root {
+    --docly-primary: #3f5af3;
+    --docly-bg: #12141d;
+    --docly-sidebar-bg: #1a1d27;
+    --docly-text-body: #a0a5b8;
+    --docly-text-heading: #ffffff;
+    --docly-border: rgba(255, 255, 255, 0.1);
+    --docly-card-bg: rgba(255, 255, 255, 0.03);
+}
+
+/* Aydın rejim (Light Mode) üçün dəyərlər */
+[data-theme="light"] {
+    --docly-bg: #f8f9fa;
+    --docly-sidebar-bg: #ffffff;
+    --docly-text-body: #6c757d;
+    --docly-text-heading: #212529;
+    --docly-border: rgba(0, 0, 0, 0.08);
+    --docly-card-bg: #ffffff;
+}
+
+body {
+    background-color: var(--docly-bg);
+    color: var(--docly-text-body);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    display: flex;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+/* Sidebar (Yan Panel) */
+.docly-sidebar {
+    width: 260px;
+    background-color: var(--docly-sidebar-bg);
+    border-right: 1px solid var(--docly-border);
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1000;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.docly-sidebar-logo {
+    padding: 24px;
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--docly-text-heading);
+    border-bottom: 1px solid var(--docly-border);
+    transition: color 0.3s ease;
+}
+
+.docly-sidebar-menu {
+    padding: 20px 0;
+    flex-grow: 1;
+    overflow-y: auto;
+}
+
+.docly-sidebar-menu a {
+    display: flex;
+    align-items: center;
+    padding: 15px 24px;
+    color: var(--docly-text-body);
+    text-decoration: none;
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+.docly-sidebar-menu a i {
+    width: 24px;
+    margin-right: 10px;
+    font-size: 18px;
+}
+
+.docly-sidebar-menu a:hover,
+.docly-sidebar-menu a.active {
+    background-color: rgba(63, 90, 243, 0.1);
+    color: var(--docly-primary);
+    border-right: 3px solid var(--docly-primary);
+}
+
+/* Main Content (Əsas Məzmun) */
+.docly-main-content {
+    flex-grow: 1;
+    margin-left: 260px;
+    padding: 40px;
+    min-height: 100vh;
+    width: calc(100% - 260px);
+    transition: background-color 0.3s ease;
+}
+
+/* Widgets (Kartlar) */
+.widget-card {
+    background: var(--docly-card-bg);
+    border: 1px solid var(--docly-border);
+    border-radius: 16px;
+    padding: 25px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    backdrop-filter: blur(10px);
+    transition: transform 0.3s ease, border-color 0.3s ease, background-color 0.3s ease;
+    opacity: 0;
+    transform: translateY(30px);
+}
+
+.widget-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--docly-primary);
+}
+
+.widget-icon {
+    font-size: 36px;
+    color: var(--docly-primary);
+    margin-bottom: 15px;
+}
+
+.widget-title {
+    font-size: 16px;
+    color: var(--docly-text-body);
+    margin-bottom: 10px;
+    font-weight: 500;
+}
+
+.widget-value {
+    font-size: 32px;
+    color: var(--docly-text-heading);
+    font-weight: 700;
+    margin-bottom: 0;
+}
+
+/* Recent Appointments (Live List) */
+.recent-appointments {
+    background: var(--docly-card-bg);
+    border: 1px solid var(--docly-border);
+    border-radius: 16px;
+    padding: 25px;
+    margin-top: 30px;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.recent-appointments h3 {
+    color: var(--docly-text-heading);
+    margin-bottom: 20px;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+/* Table Custom */
+.table-custom {
+    color: var(--docly-text-body);
+    margin-bottom: 0;
+}
+
+.table-custom th {
+    color: var(--docly-text-heading);
+    border-bottom-color: var(--docly-border);
+    font-weight: 600;
+    padding: 15px;
+    background: transparent;
+}
+
+.table-custom td {
+    border-bottom-color: var(--docly-border);
+    vertical-align: middle;
+    padding: 15px;
+    background: transparent;
+    color: var(--docly-text-body);
+}
+
+/* Badges */
+.status-badge {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.status-completed {
+    background: rgba(40, 167, 69, 0.15);
+    color: #28a745;
+    border: 1px solid rgba(40, 167, 69, 0.2);
+}
+
+.status-noshow {
+    background: rgba(220, 53, 69, 0.15);
+    color: #dc3545;
+    border: 1px solid rgba(220, 53, 69, 0.2);
+}
+
+.status-pending {
+    background: rgba(255, 193, 7, 0.15);
+    color: #ffc107;
+    border: 1px solid rgba(255, 193, 7, 0.2);
+}
+
+/* FullCalendar Customizations */
+.fc {
+    color: var(--docly-text-heading);
+}
+
+.fc-theme-standard td,
+.fc-theme-standard th,
+.fc-theme-standard .fc-scrollgrid {
+    border-color: var(--docly-border);
+}
+
+.fc .fc-button-primary {
+    background-color: var(--docly-primary);
+    border-color: var(--docly-primary);
+    text-transform: capitalize;
+}
+
+.fc .fc-button-primary:hover,
+.fc .fc-button-primary:not(:disabled):active,
+.fc .fc-button-primary:not(:disabled).fc-button-active {
+    background-color: #2b44d1;
+    border-color: #2b44d1;
+}
+
+.fc-day-today {
+    background-color: rgba(63, 90, 243, 0.1) !important;
+}
+
+.fc-event {
+    cursor: pointer;
+    padding: 2px 4px;
+    border-radius: 4px;
+}
+
+/* Kalendar slotlarının hündürlüyü (saatlar arasındakı boşluq) */
+.fc-timegrid-slot {
+    height: 45px !important;
+}
+
+.calendar-container {
+    animation: fadeIn 0.8s ease forwards;
+}
