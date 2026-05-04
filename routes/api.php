@@ -29,6 +29,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/messages/{receiverId}', [ChatController::class, 'getMessages']);
 
     Route::get('getNotification/{userID}',[ApiController::class,'show_notification']);
+    Route::put('updateNotificationStatus/{userID}',[ApiController::class,'update_notification']);
 
 
     Route::get('/profile', [AuthController::class, 'profile']);
@@ -37,6 +38,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/patients/{doctorID}', [ApiController::class, 'patients']);
     
     Route::get('/work_hours/{id}', [ApiController::class, 'work_hours']);
+
+    // doctor leaves
+    Route::get('/doctor/leaves/{id}',[ApiController::class,'doctor_leaves']);
+    Route::post('/doctor/create/leaves',[ApiController::class,'create_doctor_leaves']);
+    Route::delete('/doctor/delete/leaves/{id}',[ApiController::class,'delete_doctor_leaves']);
 
     Route::get('/getBookDoktor/{id}',[ApiController::class,'book_list_for_doctor']);
     Route::get('/getBook',[ApiController::class,'book_list']);

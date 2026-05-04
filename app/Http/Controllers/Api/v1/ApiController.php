@@ -414,6 +414,19 @@ class ApiController extends Controller
     public function create_book(Request $request)
     {
 
+        // Seçilən tarixin həkimin qeyri-iş günü (leave) olub-olmadığını yoxlayırıq
+        $isLeaveDate = DB::table('doctor_leaves')
+            ->where('doctor_id', $request->doctor_id)
+            ->where('dateTime', $request->appointment_time)
+            ->exists();
+
+        if ($isLeaveDate) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Seçilmiş tarix həkimin qeyri-iş günüdür. Zəhmət olmasa başqa tarix seçin.'
+            ], 400);
+        }
+
         $appointment = Appointment::create([
             'doctor_id'        => $request->doctor_id ?? null,
             'patient_id'       => $request->patient_id ?? null,
@@ -557,11 +570,82 @@ class ApiController extends Controller
                 'title' => $nt->title,
                 'start_time' => date('H:i',strtotime($nt->start_time)),
                 'description' => $nt->description,
+                'isRead' => $nt->isRead,
                 'created_date' => date('d-m-Y',strtotime($nt->created_at))
             ];
         }
 
         return response()->json($data);
+    }
+
+    public function update_notification($userID)
+    {
+        Notification::where('user_id',$userID)->update(['isRead'=>1]);
+        return response()->json([
+            'message' => 'Success',
+            'data' => 'Mesaj oxundu...'
+        ],200);
+    }
+
+    public function doctor_leaves(Request $request, $id)
+    {
+        $query = DB::table('doctor_leaves');
+        
+        if ($id) {
+            $query->where('doctor_id', $id);
+        }
+        
+        return response()->json([
+            'status' => 'success',
+            'data' => $query->get()
+        ], 200);
+    }
+
+    public function create_doctor_leaves(Request $request)
+    {
+        $doctorId = $request->input('doctor_id');
+        $dates = $request->input('leavesDates'); // Məsələn: ["2023-11-01", "2023-11-02"]
+
+        if (!$doctorId || empty($dates) || !is_array($dates)) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Həkim ID və ya tarixlər (array şəklində) düzgün göndərilməyib.'
+            ], 400);
+        }
+
+        $insertData = [];
+        foreach ($dates as $date) {
+            // Eyni tarixin təkrar əlavə olunmasının qarşısını alırıq
+            $exists = DB::table('doctor_leaves')->where('doctor_id', $doctorId)->where('dateTime', $date)->exists();
+            
+            if (!$exists) {
+                $insertData[] = [
+                    'doctor_id' => $doctorId,
+                    'dateTime' => $date,
+                    'reason'=>''
+                ];
+            }
+        }
+
+        if (!empty($insertData)) {
+            DB::table('doctor_leaves')->insert($insertData);
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Qeyri-iş günləri uğurla əlavə edildi.',
+            'data' => $insertData,
+        ], 200);
+    }
+
+    public function delete_doctor_leaves($id)
+    {
+        DB::table('doctor_leaves')->where('id', $id)->delete();
+        
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Qeyri-iş günü silindi.'
+        ], 200);
     }
 
     /// Randevu ucun REST API

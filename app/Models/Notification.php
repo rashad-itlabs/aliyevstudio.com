@@ -12,5 +12,6 @@ class Notification extends Model
 
     protected $casts = [
        // 'start_time' => 'datetime:H:i',
+       'isRead' => 'boolean',
     ];
 }
